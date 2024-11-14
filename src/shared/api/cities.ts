@@ -15,12 +15,12 @@ export const fetchUserLocation = async (): Promise<{
 } | undefined> => {
   try {
 
-    const response = await fetch(import.meta.env.VITE_API_USER_LOCATION)
+    const response = await fetch(`${import.meta.env.VITE_API_USER_LOCATION}?apiKey=${import.meta.env.VITE_API_KEY_USER_LOCATION}`)
     const data = await response.json()
 
     return {
-      lat: data.lat,
-      lon: data.lon
+      lat: data.latitude,
+      lon: data.longitude
     }
   }
 
