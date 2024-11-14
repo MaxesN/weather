@@ -12,12 +12,19 @@ export const fetchCities = async (value: string): Promise<City[]> => {
 export const fetchUserLocation = async (): Promise<{
   lat: number,
   lon: number
-}> => {
-  const response = await fetch(import.meta.env.VITE_API_USER_LOCATION)
-  const data = await response.json()
+} | undefined> => {
+  try {
 
-  return {
-    lat: data.lat,
-    lon: data.lon
+    const response = await fetch(import.meta.env.VITE_API_USER_LOCATION)
+    const data = await response.json()
+
+    return {
+      lat: data.lat,
+      lon: data.lon
+    }
+  }
+
+  catch (err) {
+    console.log(err)
   }
 }
