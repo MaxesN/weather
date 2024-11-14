@@ -1,0 +1,6 @@
+export { default as AddOrRemoveFavorite } from './AddOrRemoveFavorite.vue'
+export { default as DeleteCard } from './DeleteCard.vue'
+export { default as AddCard } from './AddCard.vue'
+export { default as Search } from './Search.vue'
+export { default as SwitchDays } from './SwitchDays.vue'
+export { default as SwitchVariant } from './SwitchVariant.vue'
