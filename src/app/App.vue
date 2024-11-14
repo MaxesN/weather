@@ -26,6 +26,7 @@ const initUserWeather = async () => {
   weatherStore.createCard('base', weather)
 };
 
+initUserWeather();
 
 watch(
   weatherStoreRef.favorite,
@@ -35,11 +36,8 @@ watch(
   { deep: true }
 );
 
-onMounted(() => {
-  if(weatherStoreRef.base.value.length === 0) {
-    initUserWeather();
-  } 
 
+onMounted(() => {
   weatherStoreRef.favorite.value = loadStateFromLocalStorage<WeatherCard[]>("favorite") || [];
 });
 
