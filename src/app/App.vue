@@ -9,23 +9,29 @@ import { onMounted, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterView } from "vue-router";
 
-const {locale} = useI18n()
+const { locale } = useI18n();
 
-const weatherStore = useWeather() ;
-const weatherStoreRef = storeToRefs(weatherStore)
+const weatherStore = useWeather();
+const weatherStoreRef = storeToRefs(weatherStore);
 
 watch(locale, () => {
-  localStorage.setItem('locale', locale.value)
-})
+  localStorage.setItem("locale", locale.value);
+});
 
 const initUserWeather = async () => {
   const coordinates = await fetchUserLocation();
 
-  const weather = await fetchWeatherByCoordinate(coordinates.lat, coordinates.lon, locale.value)
-
-  weatherStore.createCard('base', weather)
+  if (coordinates) {
+    const weather = await fetchWeatherByCoordinate(
+      coordinates.lat,
+      coordinates.lon,
+      locale.value
+    );
+    weatherStore.createCard("base", weather);
+  }
 };
 
+initUserWeather();
 
 watch(
   weatherStoreRef.favorite,
@@ -36,25 +42,23 @@ watch(
 );
 
 onMounted(() => {
-  if(weatherStoreRef.base.value.length === 0) {
-    initUserWeather();
-  } 
-
-  weatherStoreRef.favorite.value = loadStateFromLocalStorage<WeatherCard[]>("favorite") || [];
+  weatherStoreRef.favorite.value =
+    loadStateFromLocalStorage<WeatherCard[]>("favorite") || [];
 });
-
 </script>
 
 <template>
   <div class="header">
-    <RouterLink active-class="active" to="/">{{$t('header.home')}}</RouterLink>
-    <RouterLink active-class="active" to="/favorite">{{$t('header.favorite')}}</RouterLink>
+    <RouterLink active-class="active" to="/">{{ $t("header.home") }}</RouterLink>
+    <RouterLink active-class="active" to="/favorite">{{
+      $t("header.favorite")
+    }}</RouterLink>
     <div>
       <select v-model="$i18n.locale">
-      <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang">
-        {{ lang }}
-      </option>
-    </select>
+        <option v-for="(lang, i) in languages" :key="`Lang${i}`" :value="lang">
+          {{ lang }}
+        </option>
+      </select>
     </div>
   </div>
   <div class="container">
